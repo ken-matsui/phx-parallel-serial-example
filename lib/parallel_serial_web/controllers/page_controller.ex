@@ -40,4 +40,13 @@ defmodule ParallelSerialWeb.PageController do
   	|> List.flatten
   	json conn, results
   end
+
+  def parallel_search(conn, %{"q" => q}) do
+  	results = create_requests(q)
+  	|> Enum.map(&Task.async(fn -> get_response(&1) end))
+  	|> Enum.map(&Task.await(&1, 10_000))
+  	|> Enum.map(&parse_response/1)
+  	|> List.flatten
+  	json conn, results
+  end
 end
