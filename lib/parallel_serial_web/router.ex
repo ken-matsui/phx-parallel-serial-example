@@ -17,6 +17,8 @@ defmodule ParallelSerialWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/parallel/study", PageController, :parallel_search
+    get "serial/study", PageController, :serial_search
   end
 
   # Other scopes may use custom stacks.
